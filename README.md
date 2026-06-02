@@ -16,17 +16,7 @@ script (`make_figures.py`), and the empirical application (`empirics.py`).
 
 The code was developed and tested with Python 3.11+. The following third-party
 packages are required:
-
-| Package      | Purpose                                                          |
-|--------------|------------------------------------------------------------------|
-| `numpy`      | numerical arrays and linear algebra                              |
-| `pandas`     | tabular data handling                                            |
-| `scipy`      | statistical distributions and routines                           |
-| `joblib`     | parallel execution of Monte Carlo replications                   |
-| `matplotlib` | figures                                                          |
-| `xarray`     | reading the NetCDF empirical data set                            |
-| `netCDF4`    | NetCDF backend used by `xarray` to read `application_data.nc`    |
-| `cartopy`    | map projections and coastlines for the empirical heatmaps        |
+`numpy` , `pandas`, `scipy`, `joblib`, `matplotlib`, `xarray`, `netCDF4`, `cartopy`.
 
 ## Files contained
 - **`common.py`** — core routines shared across all scripts: the data-generating
@@ -44,38 +34,22 @@ the European Climate Assessment & Dataset (ECA&D):
 > ECA&D, *Daily data — predefined series*, blended series, element RR (daily
 > precipitation amount), <https://www.ecad.eu/dailydata/predefinedseries.php>,
 > accessed on January 27, 2025.
-
-Two cleaned artefacts drive `empirics.py`:
-
-- **`application_data.nc`** — the cleaned winter (DJF) rainfall panel for both
-  periods, restricted to qualifying European stations (NetCDF).
-- **`station_doc.pkl`** — the station catalogue (`STAID`, `STANAME`, `CN`, `LAT`,
-  `LON`, `HGHT`), with latitude/longitude converted to decimal degrees.
-
-To run the empirical analysis you can either:
-
-1. **Use the cleaned artefacts.** Place `application_data.nc` and `station_doc.pkl`
-   in the repository root, then run `python empirics.py`. The `clean_raw_data()`
-   step detects the existing files and skips cleaning automatically.
-
-2. **Rebuild from the raw ECA&D files.** Download the blended RR series from the
-   ECA&D link above and place the raw inputs in the repository root:
+> 
+**Build from the raw ECA&D files.** 
+Download the blended RR series from the ECA&D link above and place the raw inputs 
+in the repository root:
    - `ECA_blend_rr/` — the folder of per-station `RR_STAID*.txt` files,
    - `stations.txt` — the station catalogue,
    - `ECA_blend_source_rr.txt` — the source/coverage file.
 
-   Then run `python empirics.py`; `clean_raw_data()` will regenerate
-   `application_data.nc` and `station_doc.pkl` before the analysis. The cleaning
-   keeps only December/January/February (DJF) days, restricts to the European box
-   (latitude 35°–72°, longitude −10°–21°), and keeps stations with sufficient
-   valid winter observations in both periods.
-   
+Then run `python empirics.py`; `clean_raw_data()` will regenerate `application_data.nc` 
+and `station_doc.pkl` before the analysis. 
+
 ## How to reproduce the results
 
-All scripts are run from the repository root. Each script has more options; run
-`python <script>.py --help` to see them.
+Run `python <script>.py --help` to see more options.
 
-### Main accuracy simulation (`main_simulation.py`)
+### Main simulation (`main_simulation.py`)
 
 ```bash
 # Main simulation
@@ -95,10 +69,6 @@ python main_simulation.py --dgp independent_noise dependent_noise \
 # S.2.5 single group
 python main_simulation.py --dgp independent_noise dependent_noise \
     --G 1 --gamma_single 0.2 0.5 0.7 1.0 --output_dir sim_results_G1_noise
-
-# Quick smoke-test
-python main_simulation.py --n_jobs 1 --nsim 10 --T 1000 --groupsize 100 \
-    --G 3 --dgp independent --k1_rate 0.12 --r_H 0.05
 ```
 
 ### Method comparison (`compare_method.py`)
@@ -110,7 +80,7 @@ python compare_method.py --dgp_source iterative --experiment vary_q
 # Replicate Chen et al., vary Delta (Figure S.2.8)
 python compare_method.py --dgp_source iterative --experiment vary_delta
 
-# Our DGP, vary q (independent + dependent)
+# DGP as in main simulation, vary q (independent + dependent)
 python compare_method.py --dgp_source segmentation --experiment vary_q \
     --n_list 1000 3000 --q_grid 100 300
 ```
@@ -137,12 +107,9 @@ With the data in place (see the Data section), run:
 python empirics.py
 ```
 
-This produces the period heatmaps, the per-run two-sample test tables, and the
-group-membership files under `sensitivity_results_*/`.
 
 
-This version: June 1, 2026
-
+This version: June 2, 2026
 
 Copyright: Chenhui Wang, Juan-Juan Cai, Yicong Lin, and Julia Schaumburg
 
