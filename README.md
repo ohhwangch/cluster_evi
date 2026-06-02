@@ -28,53 +28,13 @@ packages are required:
 | `netCDF4`    | NetCDF backend used by `xarray` to read `application_data.nc`    |
 | `cartopy`    | map projections and coastlines for the empirical heatmaps        |
 
-Install with `pip`:
-
-```bash
-pip install numpy pandas scipy joblib matplotlib xarray netCDF4 cartopy
-```
-
-or with `conda` (recommended for `cartopy`, which has system-level geospatial
-dependencies):
-
-```bash
-conda install -c conda-forge numpy pandas scipy joblib matplotlib xarray netcdf4 cartopy
-```
-
-
 ## Files contained
-
 - **`common.py`** — core routines shared across all scripts: the data-generating
-  processes for the simulations, the Hill estimator, the structural-break
-  machinery (`ssr`, `parti`, `datingtrimming`, `ssrnul`, `elbow_ghat`), group
-  accuracy, the parallel-seed driver, and small I/O helpers. Imported by the
-  other scripts; not run on its own.
-- **`main_simulation.py`** — the main Monte Carlo study (estimation accuracy).
-  Sweeps over the number of groups, data-generating process, panel dimensions and
-  tuning fractions, and writes four CSVs per scenario folder: `elbow_accuracy.csv`,
-  `trueG_accuracy.csv`, `Ghat_accuracy.csv`, and `measure_sums.csv` (per-unit
-  error sums from which all Bias²/SD/RMSE quantities are reconstructed).
-- **`compare_method.py`** — head-to-head comparison of the two grouping methods:
-  the iterative tail-clustering of Chen et al. (`--dgp_source iterative`) and the
-  structural-break segmentation of this paper (`--dgp_source segmentation`),
-  across the `vary_q`, `vary_delta`, and `vary_rk` experiments. Writes
-  `results_iterative_*.csv` / `results_segmentation_*.csv` to
-  `results_compare_method/`.
-- **`rejection_simulation.py`** — empirical size/power of the two-sample group-EVI
-  t-test (Section S.2.6). For each (T, group, effect size Δγ) it reports the
-  rejection rate; Δγ = 0 gives the empirical size, Δγ ≠ 0 the power. Writes
-  `t_test_G{G}_size{groupsize}.csv` (columns `Group, T, Effect Size, Power`).
-- **`make_figures.py`** — produces every figure from the simulation, comparison,
-  and rejection output: the 2×2 Bias²/SD/RMSE dot figures (one per `sim_results_*`
-  folder), the single-group figure, the accuracy-vs-parameter line panels, the
-  per-group / heatmap comparison figures, and the rejection-rate power curves.
-- **`empirics.py`** — the empirical analysis of European winter (December–January–
-  February) daily precipitation. Optionally rebuilds the cleaned data set from the
-  raw ECA&D files (`clean_raw_data()`), then groups the extreme-value indices via
-  the structural-break method, compares period 1 (1950–1984) with period 2
-  (1985–2020), and produces the spatial heatmaps and two-sample test tables (both
-  i.i.d. and spatial-dependence-corrected).
-
+  processes, the estimator, the structural-break machinery, the parallel-seed driver.
+- **`main_simulation.py`** — the main Monte Carlo study.
+- **`compare_method.py`** , **`rejection_simulation.py`** — the Monte Carlo study in supplement.
+- **`make_figures.py`** — produces figures.
+- **`empirics.py`** — the empirical analysis of European winter daily precipitation. 
 
 ## Data
 
@@ -109,8 +69,7 @@ To run the empirical analysis you can either:
    keeps only December/January/February (DJF) days, restricts to the European box
    (latitude 35°–72°, longitude −10°–21°), and keeps stations with sufficient
    valid winter observations in both periods.
-
-
+   
 ## How to reproduce the results
 
 All scripts are run from the repository root. Each script has more options; run
