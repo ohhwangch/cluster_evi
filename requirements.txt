@@ -1,0 +1,9 @@
+# Python 3.11+
+numpy
+pandas
+scipy
+joblib
+matplotlib
+xarray
+netCDF4
+cartopy
