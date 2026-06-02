@@ -19,8 +19,8 @@ packages are required:
 `numpy` , `pandas`, `scipy`, `joblib`, `matplotlib`, `xarray`, `netCDF4`, `cartopy`.
 
 ## Files contained
-- **`common.py`** — core routines shared across all scripts: the data-generating
-  processes, the estimator, the structural-break machinery, the parallel-seed driver.
+- **`common.py`** — core routines shared across all scripts including the data-generating
+  processes, the estimator, the structural-break machinery.
 - **`main_simulation.py`** — the main Monte Carlo study.
 - **`compare_method.py`** , **`rejection_simulation.py`** — the Monte Carlo study in supplement.
 - **`make_figures.py`** — produces figures.
